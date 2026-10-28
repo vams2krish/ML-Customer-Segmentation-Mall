@@ -1,4 +1,4 @@
-# Customer Segmentation Mall
+# ML - Customer Segmentation Mall
 
 **Unsupervised machine learning (ML) for exploring customer groups with K-Means clustering.**
 
@@ -50,8 +50,8 @@ Cluster identifiers are arbitrary labels, not customer rankings or validated bus
 ## Run locally
 
 ```bash
-git clone https://github.com/vams2krish/Customer-Segmentation-Mall.git
-cd Customer-Segmentation-Mall
+git clone https://github.com/vams2krish/ML-Customer-Segmentation-Mall.git
+cd ML-Customer-Segmentation-Mall
 python -m venv .venv
 ```
 
@@ -104,7 +104,7 @@ Saved outputs are from an earlier notebook run and have not been regenerated for
 ## Repository structure
 
 ```text
-Customer-Segmentation-Mall/
+ML-Customer-Segmentation-Mall/
 ├── Customer-Segmentation-Mall.ipynb   # Original exploratory notebook
 ├── archive/
 │   └── Mall_Customers.csv            # Input data
