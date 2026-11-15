@@ -7,7 +7,7 @@ export const help = {
   'Clusters': 'Choose an integer from 2 to 8. Changing this value refits the model and resets the chart filter. More clusters split the same 200 records into smaller groups.',
   'Segment filter': 'Select a segment to dim other dots, or select All to restore the full view. The filter does not change the model, totals, or segment mix.',
   'Segment mix': 'Each bar is a segment’s count divided by 200. Counts across segments total 200, and the shares total 100%.',
-  'Segment profile': 'The segment number is a display label ordered by average income. Colors connect the chart, mix, profiles, and assignment. A different cluster count can change both membership and numbering.',
+  'Segment profile': 'The name describes the group’s average age, income, or spending score. Scores below 35 are low and scores of 60 or above are high. Average incomes below $35k are lower and those of $75k or above are high. Changing the cluster count can change the names and who belongs to each group.',
   'Sample share': 'Customers in this segment divided by all 200 sample customers. Displayed shares are rounded to one decimal place.',
   'Segment size': 'Number of customers assigned to this segment. Every sample customer belongs to exactly one segment.',
   'Average age': 'Mean age of the selected group, shown in years. Observed sample ages range from 18 to 70.',

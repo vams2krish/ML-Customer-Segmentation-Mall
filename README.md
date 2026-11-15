@@ -40,7 +40,7 @@ The [bundled CSV](archive/Mall_Customers.csv) contains 200 customer rows. The or
 | CustomerID | 200 unique identifiers | Record identity only |
 | Genre | Categorical field in the source CSV | Excluded |
 
-The model standardizes the three features, fits K-Means with 20 seeded initializations per candidate fit, and assigns each record to the nearest centroid in standardized space. Segment numbers are ordered by centroid income and can change when the cluster count changes. Five is an exploratory starting point. The notebook also compares inertia and silhouette scores across 2–8 clusters. The browser and scikit-learn use different initializers; exact assignments can differ.
+The model standardizes the three features, fits K-Means with 20 seeded initializations per candidate fit, and assigns each record to the nearest centroid in standardized space. The dashboard uses descriptive names based on centroid age, income, and spending score. For example, the five-cluster view includes Young high scorers and High-income low scorers. Names can change when the cluster count changes. Five is an exploratory starting point. The notebook also compares inertia and silhouette scores across 2–8 clusters. The browser and scikit-learn use different initializers; exact assignments can differ.
 
 This small sample supports exploration. An assignment does not express confidence or validate a business segment, especially for inputs outside the observed ranges.
 

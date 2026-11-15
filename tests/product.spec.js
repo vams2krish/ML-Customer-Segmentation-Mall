@@ -9,7 +9,7 @@ test('overview lets users isolate segments and recompute cluster counts',async({
   await expect(page.getByRole('heading',{name:'Mall customer segments'})).toBeVisible();
   await expect(page.locator('#plot circle')).toHaveCount(200);
   await save(page,'01-overview');
-  const segment=page.getByRole('button',{name:'Segment 02',exact:true});
+  const segment=page.getByRole('button',{name:'Young high scorers',exact:true});
   await segment.click();
   await expect(segment).toHaveAttribute('aria-pressed','true');
   expect(await page.locator('#plot circle[opacity="0.1"]').count()).toBeGreaterThan(0);
@@ -35,7 +35,7 @@ test('profiles and assignment use the current model; invalid inputs are rejected
   await expect(page.getByRole('heading',{name:'Assignment result'})).toBeVisible();
   await page.getByRole('spinbutton',{name:'Spending score (1–100)'}).fill('78');
   await page.getByRole('button',{name:'Assign segment'}).click();
-  await expect(page.locator('#result h2')).toHaveText(/Segment 0[1-7]/);
+  await expect(page.locator('#result h2')).toHaveText('High-income high scorers ?');
   await expect(page.locator('#result')).toContainText('7 clusters');
   await save(page,'05-customer-assignment');
 });
@@ -49,7 +49,7 @@ test('mobile workspace fits the viewport and supports keyboard navigation',async
   await page.keyboard.press('Enter');
   await expect(page.getByRole('heading',{name:'Assign a customer'})).toBeFocused();
   await page.getByRole('button',{name:'Assign segment'}).click();
-  await expect(page.locator('#result h2')).toHaveText(/Segment 0[1-5]/);
+  await expect(page.locator('#result h2')).toHaveText('High-income high scorers ?');
   await save(page,'07-mobile-assignment');
 });
 test('field guide explains ranges and returns focus; infographic reflects current model',async({page})=>{
