@@ -1,120 +1,80 @@
-# ML - Customer Segmentation Mall
+# Segment Studio · Mall Customer Segmentation
 
-**Unsupervised machine learning (ML) for exploring customer groups with K-Means clustering.**
+[**Open the live Vercel demo →**](https://ml-customer-segmentation-mall.vercel.app)
 
-This project explores mall customer demographics, annual income, and spending behavior through a Python notebook. It demonstrates data inspection, feature preparation, standardization, cluster exploration, model fitting, visualization, and assigning a sample customer to a segment. Customer groups can provide a starting point for targeted marketing hypotheses and customer engagement planning.
+Segment Studio is an **unsupervised machine learning (ML)** project. Its interactive dashboard uses K-Means to explore how 200 sample mall customers group by age, annual income, and spending score. The browser fits the model locally; customer profiles entered into the app are neither stored nor sent to a server.
 
-![Project elbow-method visualization](docs/images/elbow-method.png)
+![Dashboard overview showing the customer scatter plot, segment mix, and modeling infographic](docs/screenshots/01-overview.png)
 
-*Project image extracted from the notebook's saved output: within-cluster sum of squares (WCSS) across candidate cluster counts.*
+## Explore the product
 
-## ML or DL?
+- **Overview:** see sample averages, compare 2–8 clusters, and isolate any group in the income vs. spending chart. Each diamond marks the displayed coordinates of a fitted centroid; age is the third model feature.
+- **Segments:** compare each segment’s customer count, sample share, and typical age, income, and spending score in original units.
+- **Predict:** enter a profile to find the nearest segment in the current fit. The form validates each field before assigning a group.
+- **Field guide:** select a **?** to see what a label or control means, including its units and relevant ranges. Press **Escape** or select **Got it** to close and return focus to the control.
+- **Model walkthrough:** follow the four-step infographic from sample data and scaling to grouping and assignment.
 
-This is a **machine learning (ML)** project, specifically **unsupervised learning / clustering**. It uses scikit-learn's K-Means to group records without labeled target outcomes. It is **not deep learning (DL)**: no neural networks or deep learning frameworks are used.
+## Product screenshots
 
-## Dataset
+| Desktop workspace | Desktop workspace |
+| --- | --- |
+| [Segment focus](docs/screenshots/02-segment-focus.png) ![One segment highlighted](docs/screenshots/02-segment-focus.png) | [Seven-cluster view](docs/screenshots/03-seven-clusters.png) ![Dashboard refit to seven clusters](docs/screenshots/03-seven-clusters.png) |
+| [Segment profiles](docs/screenshots/04-segment-profiles.png) ![Profile cards](docs/screenshots/04-segment-profiles.png) | [Customer assignment](docs/screenshots/05-customer-assignment.png) ![Profile form and nearest-segment result](docs/screenshots/05-customer-assignment.png) |
+| [Chart field guide](docs/screenshots/08-chart-field-guide.png) ![Chart help explaining observed ranges](docs/screenshots/08-chart-field-guide.png) | [Prediction field guide](docs/screenshots/10-prediction-field-guide.png) ![Income help explaining units and input limits](docs/screenshots/10-prediction-field-guide.png) |
 
-`archive/Mall_Customers.csv` contains **200 records and five columns**:
+| [Mobile overview](docs/screenshots/06-mobile-overview.png) | [Mobile assignment](docs/screenshots/07-mobile-assignment.png) |
+| --- | --- |
+| <img src="docs/screenshots/06-mobile-overview.png" alt="Mobile dashboard" width="265"> | <img src="docs/screenshots/07-mobile-assignment.png" alt="Mobile prediction form and result" width="265"> |
 
-| Column | Description | Current model usage |
+![Infographic showing input, scale, cluster and match steps](docs/screenshots/09-model-infographic.png)
+
+## Model and dataset
+
+The [bundled CSV](archive/Mall_Customers.csv) contains 200 customer rows. The original source and redistribution license are not recorded in the supplied project files.
+
+| Field | Observed sample values | Model role |
 | --- | --- | --- |
-| `CustomerID` | Customer identifier | Included as a numeric feature |
-| `Genre` | Categorical gender field, using the CSV's original name | Encoding demonstrated separately; excluded from clustering |
-| `Age` | Customer age | Included |
-| `Annual Income (k$)` | Annual income in thousands of dollars | Included |
-| `Spending Score (1-100)` | Dataset spending score | Included |
+| Age | 18–70 years | Fit and prediction |
+| Annual income | $15k–$137k | Fit and prediction |
+| Spending score | 1–99, on a defined scale of 1–100 | Fit and prediction |
+| CustomerID | 200 unique identifiers | Record identity only |
+| Genre | Categorical field in the source CSV | Excluded |
 
-The notebook checks dataset shape, missing values, and categories. The original dataset source and redistribution license are not recorded in the supplied files; no specific provenance or license is asserted here.
+The model standardizes the three features, fits K-Means with 20 seeded initializations per candidate fit, and assigns each record to the nearest centroid in standardized space. Segment numbers are ordered by centroid income and can change when the cluster count changes. Five is an exploratory starting point. The notebook also compares inertia and silhouette scores across 2–8 clusters. The browser and scikit-learn use different initializers; exact assignments can differ.
 
-## Methodology
+This small sample supports exploration. An assignment does not express confidence or validate a business segment, especially for inputs outside the observed ranges.
 
-1. Load the CSV with pandas and inspect the data.
-2. Drop `Genre` to create a numeric feature matrix.
-3. Standardize the numeric features using `StandardScaler`.
-4. Demonstrate one-hot encoding of `Genre` separately.
-5. Fit K-Means for 1–10 clusters and plot inertia using the elbow method.
-6. Fit a five-cluster model with `init='k-means++'` and `random_state=42`.
-7. Append cluster labels to the dataframe in memory and visualize segments.
-8. Scale a sample customer record and predict its cluster assignment.
+## Design system
 
-Cluster identifiers are arbitrary labels, not customer rankings or validated business categories.
+The UI uses a **midnight navy** canvas (`#101725`), **slate** panels (`#151F31`), and **lime** accents (`#B5ED78`) for active navigation, focus, and primary actions. Segments use a separate categorical palette carried through plots, bars, profiles, and results. Labels and counts supplement the colors. The workspace switches to stacked cards and compact navigation on mobile.
 
-## Technology
+## Run and test locally
 
-- Python and Jupyter Notebook
-- pandas and NumPy for data handling
-- scikit-learn for preprocessing and clustering
-- Matplotlib for visualization
-- Seaborn, imported in the notebook
+Use Node.js 24 or newer for the web app.
 
-## Run locally
-
-```bash
-git clone https://github.com/vams2krish/ML-Customer-Segmentation-Mall.git
-cd ML-Customer-Segmentation-Mall
-python -m venv .venv
+```sh
+npm ci
+npm run dev
+npm run build
+npm test
+npx playwright install chromium
+npm run test:e2e
 ```
 
-Activate the environment in Windows PowerShell:
+Model tests cover all supported cluster counts, centroid means, reproducibility, identifier exclusion, and invalid inputs. Browser tests cover segment filtering, refitting, profiles, prediction and validation, mobile layout, keyboard navigation, field-guide ranges and focus restoration, and the live infographic. To regenerate screenshots, set `CAPTURE_SCREENSHOTS=1` before running the browser tests.
 
-```powershell
-.\.venv\Scripts\Activate.ps1
-```
+Open the [executed Python notebook](Customer-Segmentation-Mall.ipynb) from the repository root:
 
-Or on macOS / Linux:
-
-```bash
-source .venv/bin/activate
-```
-
-Install dependencies and launch the notebook:
-
-```bash
+```sh
 python -m pip install -r requirements.txt
-jupyter notebook Customer-Segmentation-Mall.ipynb
+python -m notebook Customer-Segmentation-Mall.ipynb
 ```
 
-Before running the cells, replace the original machine-specific CSV path with:
+The web app is a static Vite build deployed to Vercel. To update the linked project from an authenticated checkout, run `npx vercel deploy --prod`. GitHub auto-deploy requires a separate GitHub login connection in Vercel.
 
-```python
-customer_dataset = pd.read_csv("archive/Mall_Customers.csv")
-```
+## Source map
 
-Run from the repository root using a Python version supported by the scientific packages. Dependencies are unpinned and do not represent a verified runtime environment. The notebook's `sparse_output` argument requires scikit-learn 1.2 or newer.
-
-## Outputs
-
-- Elbow-method chart comparing candidate cluster counts.
-- Five cluster labels added to the in-memory customer dataframe.
-- A saved customer-segment scatter plot.
-- A sample prediction; the stored output reports cluster `3`.
-
-Saved outputs are from an earlier notebook run and have not been regenerated for publication. Five clusters are selected in the code; no silhouette score, stability analysis, or external validation is reported. Assignments can vary with library versions and initialization defaults.
-
-## Known limitations
-
-- **Feature selection:** `CustomerID` participates in clustering. Remove this identifier before drawing business conclusions, since identifiers generally should not determine customer similarity.
-- **Plot labels:** the segment scatter plot uses standardized `CustomerID` and `Age` (columns 0 and 1), although its labels say income and spending score. Correct the selected columns or labels before interpreting it.
-- **Centroids:** the segment plot references lowercase `kmeans` from the elbow loop rather than the five-cluster `Kmeans` model. Use the five-cluster model's centroids for a consistent plot.
-- **Encoding:** the one-hot encoded category values are not combined with the model features.
-- **Reproducibility:** explicitly set `n_init` and pin a tested environment to avoid changes in library defaults.
-- **Validation:** compare cluster quality, stability, and segment profiles before applying results to business decisions.
-- **Scope:** this is an exploratory notebook with a small dataset, not a deployed service or a validated production segmentation system. No trained model export is included.
-
-## Repository structure
-
-```text
-ML-Customer-Segmentation-Mall/
-├── Customer-Segmentation-Mall.ipynb   # Original exploratory notebook
-├── archive/
-│   └── Mall_Customers.csv            # Input data
-├── docs/images/
-│   └── elbow-method.png              # Saved notebook chart
-├── requirements.txt                 # Notebook dependencies
-├── .gitignore
-└── README.md
-```
-
-## Potential applications and next steps
-
-After correcting feature selection and plotting, evaluate cluster stability and summarize each segment's demographics, income, and spending patterns. Validated segments could support customer profiling and campaign planning. These are potential applications, not measured business outcomes of the current project.
+- `src/model.js` — CSV validation, scaling, K-Means, and nearest-centroid assignment.
+- `src/app.js`, `src/help.js`, `src/style.css` — dashboard, field guide, and design tokens.
+- `tests/` — model and browser checks.
+- `docs/screenshots/` — real product captures.
